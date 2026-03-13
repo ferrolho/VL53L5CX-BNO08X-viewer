@@ -147,7 +147,6 @@ def distances_to_points(
         Nx3 array of (x, y, z) coordinates in meters
     """
     # Convert to meters
-    z_mm = distances
     z_m = distances / 1000.0
 
     if method == CoordinateMethod.UNIFORM:
@@ -160,8 +159,7 @@ def distances_to_points(
         # ST lookup table method: uses calibrated pitch/yaw angles
         # Hypotenuse = z_perpendicular / sin(pitch)
         # Then project using pitch/yaw to get XYZ
-        hyp = z_mm / zone_angles.st_sin_pitch  # in mm
-        hyp_m = hyp / 1000.0  # convert to meters
+        hyp_m = z_m / zone_angles.st_sin_pitch
 
         # Negate X to match our lens-flip convention (ST tables use different X direction)
         x = -zone_angles.st_cos_yaw * zone_angles.st_cos_pitch * hyp_m

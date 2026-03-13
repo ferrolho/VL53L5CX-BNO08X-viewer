@@ -475,7 +475,6 @@ def main():
     )
     args = parser.parse_args()
 
-    import logging
     setup_logging(level=logging.DEBUG if args.debug else logging.INFO)
 
     viewer = VL53L5CXViewer(port=args.port, baud=args.baud)

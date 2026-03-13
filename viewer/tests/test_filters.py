@@ -84,11 +84,13 @@ class TestFitPlane:
         result = fit_plane(points)
 
         assert result is not None
-        pos, wxyz, size = result
+        pos, wxyz, size, rmse_mm = result
         # Position should be at centroid z
         assert abs(pos[2] - 0.5) < 0.01
         # Orientation should be identity (horizontal plane)
         assert abs(wxyz[0] - 1.0) < 0.1 or abs(wxyz[0] + 1.0) < 0.1
+        # Perfect plane should have zero RMSE
+        assert rmse_mm < 0.01
 
     def test_returns_none_for_collinear_points(self):
         """Should return None for collinear points."""
@@ -137,7 +139,7 @@ class TestFitPlaneRansac:
         result = fit_plane_ransac(points, threshold=0.1)
 
         assert result is not None
-        pos, wxyz, size = result
+        pos, wxyz, size, rmse_mm = result
         # Should fit to inliers, ignoring outlier
         assert abs(pos[2] - 0.5) < 0.2
 
